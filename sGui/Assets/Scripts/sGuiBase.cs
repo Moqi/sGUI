@@ -31,8 +31,8 @@ public class sGuiBase : MonoBehaviour {
 
 
 	public Texture2D BackgroundTexture;
-	public RectOffset BackgroundBorder;
 	public Color BackgroundColor = new Color(1,1,1,1);
+	private RectOffset BackgroundBorder = new RectOffset();
 	
 	private GUIStyle _style = new GUIStyle();
 
