@@ -63,62 +63,67 @@ public class sGuiBase : MonoBehaviour {
 		CalculateRelativePos();
 	}
 
-	public void CalculateRelativePos() {
+	private void CalculateRelative(Rect rect) {
+		switch (Location) {
+			case TextAnchor.UpperLeft:
+				_relativePos = Position;
+				break;
+			case TextAnchor.UpperRight:
+				_relativePos = new Rect
+					(rect.width - Position.width - Position.x,
+					 Position.y, Position.width, Position.height);
+				break;
+			case TextAnchor.UpperCenter:
+				_relativePos = new Rect
+					((rect.width - Position.width) * 0.5f + Position.x,
+					 Position.y, Position.width, Position.height);
+				break;
 
-		switch(Location) {
-		case TextAnchor.UpperLeft:
-			_relativePos = Position;
-			break;
-		case TextAnchor.UpperRight:
-			_relativePos = new Rect
-				(Screen.width - Position.width - Position.x, 
-				 Position.y, Position.width, Position.height);
-			break;
-		case TextAnchor.UpperCenter:
-			_relativePos = new Rect
-				((Screen.width - Position.width) * 0.5f + Position.x, 
-				 Position.y, Position.width, Position.height);
-			break;
+			case TextAnchor.LowerLeft:
+				_relativePos = new Rect
+					(Position.x,
+					 rect.height - Position.height - Position.y,
+					 Position.width, Position.height);
+				break;
+			case TextAnchor.LowerRight:
+				_relativePos = new Rect
+					(rect.width - Position.width - Position.x,
+					 rect.height - Position.height - Position.y,
+					 Position.width, Position.height);
+				break;
+			case TextAnchor.LowerCenter:
+				_relativePos = new Rect
+					((rect.width - Position.width) * 0.5f + Position.x,
+					 rect.height - Position.height - Position.y,
+					 Position.width, Position.height);
+				break;
 
-		case TextAnchor.LowerLeft:
-			_relativePos = new Rect
-				(Position.x, 
-				 Screen.height - Position.height - Position.y, 
-				 Position.width, Position.height);
-			break;
-		case TextAnchor.LowerRight:
-			_relativePos = new Rect
-				(Screen.width - Position.width - Position.x, 
-				 Screen.height - Position.height - Position.y, 
-				 Position.width, Position.height);
-			break;
-		case TextAnchor.LowerCenter:
-			_relativePos = new Rect
-				((Screen.width - Position.width) * 0.5f + Position.x, 
-				 Screen.height - Position.height - Position.y, 
-				 Position.width, Position.height);
-			break;
-		
-		case TextAnchor.MiddleLeft:
-			_relativePos = new Rect
-				(Position.x, 
-				 (Screen.height - Position.height) * 0.5f + Position.y, 
-				 Position.width, Position.height);
-			break;
-		case TextAnchor.MiddleRight:
-			_relativePos = new Rect
-				(Screen.width - Position.width - Position.x, 
-				 (Screen.height - Position.height) * 0.5f + Position.y, 
-				 Position.width, Position.height);
-			break;
-		case TextAnchor.MiddleCenter:
-			_relativePos = new Rect
-				((Screen.width - Position.width) * 0.5f + Position.x, 
-				 (Screen.height - Position.height) * 0.5f + Position.y, 
-				 Position.width, Position.height);
-			break;
+			case TextAnchor.MiddleLeft:
+				_relativePos = new Rect
+					(Position.x,
+					 (rect.height - Position.height) * 0.5f + Position.y,
+					 Position.width, Position.height);
+				break;
+			case TextAnchor.MiddleRight:
+				_relativePos = new Rect
+					(rect.width - Position.width - Position.x,
+					 (rect.height - Position.height) * 0.5f + Position.y,
+					 Position.width, Position.height);
+				break;
+			case TextAnchor.MiddleCenter:
+				_relativePos = new Rect
+					((rect.width - Position.width) * 0.5f + Position.x,
+					 (rect.height - Position.height) * 0.5f + Position.y,
+					 Position.width, Position.height);
+				break;
 		}
+	}
 
+	public void CalculateRelativePos() {
+		CalculateRelative(new Rect(0, 0, Screen.width, Screen.height));
+	}
+	public void CalculateRelativePos(Rect RectBase) {
+		CalculateRelative(RectBase);
 	}
 	
 	
@@ -133,25 +138,31 @@ public class sGuiBase : MonoBehaviour {
 	}
 
 
-	public float childGUI(float pos) {
+	public Vector2 childGUI(Rect parent, Vector2 pos) {
 		if (!this.gameObject.activeSelf) {
 			return pos;
 		}
+		isChild = true;
+
 		DrawGuiBase();
-		_relativePos.y += pos;
+		CalculateRelativePos(parent);
+
+		_relativePos.x += pos.x;
+		_relativePos.y += pos.y;
+		
 		onChildGuiFunc(_relativePos, _style);
 
-		return _relativePos.y + _relativePos.height + pos;
+		return new Vector2(_relativePos.x + _relativePos.width, _relativePos.y + _relativePos.height);
 	}
 	
-	public void childGUI() {
+	public void childGUI(Rect parent) {
 		if (!this.gameObject.activeSelf) {
 			return;
 		}
 		isChild = true;
 
 		DrawGuiBase();
-		CalculateRelativePos();
+		CalculateRelativePos(parent);
 		onChildGuiFunc(_relativePos, _style);
 
 	}

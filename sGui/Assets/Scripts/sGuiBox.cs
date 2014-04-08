@@ -4,61 +4,27 @@ using System.Linq;
 using System.Collections.Generic;
 
 
+
+public enum OverflowBox
+{
+	Vertical, Horizontal
+}
+
 [ExecuteInEditMode]
 public class sGuiBox : MonoBehaviour {
-	
-	public int _depth = 1;
-	public bool _enabled = true;
-	public Rect _position;
-	public Font _font;
-	public int _fontSize = 10;
-	public Color _fontColor = Color.gray;
-	public TextAnchor _textAlign;
-	
-	public Texture2D _background;
-	public RectOffset _borderBackground;
-	public Color _colorBackground = new Color(1,1,1,1);
-	
-	public GUIContent _content;
-	public Vector2 _contentOffset;
-	public ImagePosition _contentImagePosition;
-	public RectOffset _margin;
-	
-	public GUIStyle _style = new GUIStyle();
-	
-	public bool isChild = false;
-	
-	void Start () {
-		
+
+	// TODO
+	public bool Scroller;
+	public OverflowBox ScrollerOverflow;
+	public TextAnchor ChildLocation;
+
+	public bool AlphaToChild;
+
+
+	void Start() {
+
 		updateStyles();
-		
 	}
-	
-	public void updateStyles() {
-		if(_style == null) {
-			_style = new GUIStyle();
-		}
-		
-		if(_background != null) {
-			_borderBackground.left = _borderBackground.right = (int)(_background.width * 0.5);
-			_borderBackground.top = _borderBackground.bottom = (int)(_background.height * 0.5);
-		}
-		
-		_style.normal.background = _background;
-		_style.border = _borderBackground;
-		
-		_style.contentOffset = _contentOffset;
-		_style.imagePosition = _contentImagePosition;
-		_style.margin = _margin;
-		
-		_style.alignment = _textAlign;
-		_style.fontSize = _fontSize;
-		_style.font = _font;
-		_style.richText = true;
-		_style.normal.textColor = _fontColor;
-	}
-	
-	
 	void OnValidate() {
 		updateStyles();
 	}
@@ -69,70 +35,65 @@ public class sGuiBox : MonoBehaviour {
 		updateStyles();
 	}
 	
-	public float childGUI(float pos) {
-		if (!this.gameObject.activeSelf) {
-			return pos;
+	public void updateStyles() {
+
+		Scroller = false;
+
+		if (this.GetComponent<sGuiBase>() != null) {
+			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
+			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
 		}
-		isChild = true;
-		GUI.color = _colorBackground;
-		GUILayout.BeginArea (new Rect(_position.x, _position.y+pos, _position.width, _position.height), _style);
 
-		onGuiContent ();
-
-		GUILayout.EndArea ();
-
-		return _position.y + _position.height + pos;
-	}
-
-	public void childGUI(bool value) {
-		if (!this.gameObject.activeSelf) {
+		if (this.GetComponent<sGuiBase>() == null) {
 			return;
 		}
-		isChild = true;
-		GUI.color = _colorBackground;
-		GUILayout.BeginArea (new Rect(_position.x, _position.y, _position.width, _position.height), _style);
-		
-		onGuiContent ();
-		
-		GUILayout.EndArea ();
+
+		GUIStyle _style = this.GetComponent<sGuiBase>().Style;
+
+		if (AlphaToChild) {
+			foreach (Transform child in transform.Cast<Transform>().OrderBy(t => t.GetComponent<sGuiBase>().Depth.value)) {
+				if (child.GetComponent<sGuiBase>() != null) {
+					child.GetComponent<sGuiBase>().Alpha = this.GetComponent<sGuiBase>().Alpha;
+				}
+			}
+		}
+
+
+		this.GetComponent<sGuiBase>().Style = _style;
 	}
 
-	void onGuiContent() {
+	public void drawGui(Rect position, GUIStyle style) {
 		
-		
-		
-		//foreach(Transform child in transform.Cast<Transform>().OrderBy(t=>t.name)) {
-			
-		//for(int i = 0; i < this.transform.childCount; i++) {
-			/*
-			if(child.GetComponent<sGuiSlider>() != null) {
-				child.GetComponent<sGuiSlider>().childGUI(true);
-			}
-			if(child.GetComponent<sGuiToggle>() != null) {
-				child.GetComponent<sGuiToggle>().childGUI(true);
-			}
-			if(child.GetComponent<sGuiBox>() != null) {
-				child.GetComponent<sGuiBox>().childGUI(true);
-			}
-			*/
-		//}
+		GUI.BeginGroup(position, style);
+		onGuiContent();
+		GUI.EndGroup();
+
+	}
+
+	public void drawChildGui(Rect position, GUIStyle style) {
+
+		GUILayout.BeginArea(new Rect(position.x, position.y, position.width, position.height), style);
+		onGuiContent();
+		GUILayout.EndArea();
+
 	}
 	
-	void OnGUI() {
-		if (!this.gameObject.activeSelf) {
-			return;
-		}
-		if (!isChild) {
-
-			GUI.enabled = _enabled;
-			GUI.depth = _depth;
-			GUI.color = _colorBackground;
-			GUI.BeginGroup(_position,_style);
-
-			onGuiContent();
-
-			GUI.EndGroup();
-
+	void onGuiContent() {
+		//Vector2 p = new Vector2();
+		foreach(Transform child in transform.Cast<Transform>().OrderBy(t=>t.GetComponent<sGuiBase>().Depth.value)) {
+			
+			if(child.GetComponent<sGuiBase>() != null) {
+				/*
+				switch (Overflow) {
+					case OverflowBox.Vertical:
+						p.x = 0;
+						break;
+					case OverflowBox.Horizontal:
+						p.y = 0;
+						break;
+				}*/
+				child.GetComponent<sGuiBase>().childGUI(this.GetComponent<sGuiBase>().Position);
+			}
 		}
 	}
 }

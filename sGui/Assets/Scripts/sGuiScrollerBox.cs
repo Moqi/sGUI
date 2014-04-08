@@ -98,7 +98,7 @@ public class sGuiScrollerBox : MonoBehaviour {
 
 		float _pos = 0;
 		for(int i = 0; i < this.transform.childCount; i++) {
-			_pos = this.transform.GetChild(i).GetComponent<sGuiBox>().childGUI(_pos);
+			//_pos = this.transform.GetChild(i).GetComponent<sGuiBox>().childGUI(_pos);
 		}
 		if (_pos < _boxPos.height) {
 			_pos = _boxPos.height;
@@ -125,7 +125,7 @@ public class sGuiScrollerBox : MonoBehaviour {
 		
 		float _pos = 0;
 		for(int i = 0; i < this.transform.childCount; i++) {
-			_pos = this.transform.GetChild(i).GetComponent<sGuiBox>().childGUI(_pos);
+			//_pos = this.transform.GetChild(i).GetComponent<sGuiBox>().childGUI(_pos);
 		}
 		if (_pos < _boxPos.height) {
 			_pos = _boxPos.height;

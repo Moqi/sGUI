@@ -95,7 +95,8 @@ public class sGuiButton : MonoBehaviour {
 	
 	public void drawChildGui(Rect position, GUIStyle style) {
 
-		bool _clicked = GUILayout.Button(Content, style, GUILayout.Width(position.width), GUILayout.Height(position.height));
+		//bool _clicked = GUILayout.Button(Content, style, GUILayout.Width(position.width), GUILayout.Height(position.height));
+		bool _clicked = GUI.Button(position, Content, style);
 		
 		if (_clicked) {
 			

@@ -62,7 +62,8 @@ public class sGuiLabel : MonoBehaviour {
 	}
 
 	public void drawChildGui(Rect position, GUIStyle style) {
-		GUILayout.Label (Content, style, GUILayout.Width (position.width), GUILayout.Height (position.height));
+		GUI.Label(position, Content, style);
+		//GUI.Label (Content, style, GUILayout.Width (position.width), GUILayout.Height (position.height));
 	}
 
 
