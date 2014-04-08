@@ -6,110 +6,104 @@ using System.Collections;
 [ExecuteInEditMode]
 public class sGuiToggle : MonoBehaviour {
 	
-	public int _depth = 1;
-	public Rect _position;
-	public Font _font;
-	public int _fontSize = 10;
-	public Color _fontColor = Color.gray;
-	public Color _colorPressed = Color.red;
+	public Font FontFamily;
+	public int FontSize = 10;
 	
-	public TextAnchor _textAlign;
+	public TextAnchor TextAlign;
 	
-	public Texture2D _background;
-	public Texture2D _backgroundPressed;
-	
-	public RectOffset _borderBackground;
-	
-	public GUIContent _content;
-	public Vector2 _contentOffset;
-	public ImagePosition _contentImagePosition;
-	public bool isChild = false;
-	
-	public GUIStyle _style = new GUIStyle();
+	public GUIContent Content;
+	public Color FontColor = Color.gray;
+
+	public Texture2D BackgroundTexturePressed;
+	public GUIContent ContentPressed;
+	public Color FontColorPressed = Color.red;
+
+	public Vector2 ContentOffset;
+	public ImagePosition ContentImagePosition;
 
 
-	public bool _pressed = false;
+	private bool _pressed = false;
 	
-	private OnClickFunc _funcReturn;
+	private OnClickFunc _onButtonClick;
 	
 	public delegate void OnClickFunc();
-	
-	void Start () {
-		
-		updateStyles();
-		
-	}
-	
-	public void updateStyles() {
-		if(_style == null) {
-			_style = new GUIStyle();
-		}
-		
-		if(_background != null) {
-			_borderBackground.left = _borderBackground.right = (int)(_background.width * 0.5);
-			_borderBackground.top = _borderBackground.bottom = (int)(_background.height * 0.5);
-		}
-		
-		_style.normal.background = _background;
 
-		_style.onNormal.background = _backgroundPressed;
-		_style.border = _borderBackground;
-		
-		_style.contentOffset = _contentOffset;
-		_style.imagePosition = _contentImagePosition;
-		
-		_style.alignment = _textAlign;
-		_style.fontSize = _fontSize;
-		_style.font = _font;
-		_style.richText = true;
-		_style.normal.textColor = _fontColor;
-		_style.onNormal.textColor = _colorPressed;
+	void Start() {
+		updateStyles();
 	}
-	
-	
 	void OnValidate() {
 		updateStyles();
 	}
+	void Awake() {
+		updateStyles();
+	}
+	void OnEnable() {
+		updateStyles();
+	}
 	
-	public void childGUI(bool isModal) {
-		if (!this.gameObject.activeSelf) {
+	public void updateStyles() {
+
+		if (this.GetComponent<sGuiBase>() != null) {
+			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
+			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
+		}
+
+		if (this.GetComponent<sGuiBase>() == null) {
 			return;
 		}
 
-		isChild = true;
-		_pressed = GUI.Toggle (_position, _pressed, _content, _style);
+		GUIStyle _style = this.GetComponent<sGuiBase>().Style;
 		
-	}
-	
-	public void childGUI() {
-		if (!this.gameObject.activeSelf) {
-			return;
-		}
-
-		isChild = true;
-		_pressed = GUILayout.Toggle (_pressed, _content, _style, GUILayout.Width (_position.width), GUILayout.Height (_position.height));
-
+		_style.onNormal.background = BackgroundTexturePressed;
 		
+		_style.contentOffset = ContentOffset;
+		_style.imagePosition = ContentImagePosition;
+		
+		_style.alignment = TextAlign;
+		_style.fontSize = FontSize;
+		_style.font = FontFamily;
+		_style.richText = true;
+		_style.wordWrap = true;
+		_style.normal.textColor = FontColor;
+		_style.onNormal.textColor = FontColorPressed;
+
+
+		this.GetComponent<sGuiBase>().Style = _style;
 	}
-	
-	void OnGUI() {
-		if (!this.gameObject.activeSelf) {
-			return;
+
+
+	public void drawGui(Rect position, GUIStyle style) {
+
+		Pressed = GUI.Toggle(position, _pressed, (_pressed) ? ContentPressed : Content, style);
+
+		if (GUI.changed && _onButtonClick != null) {
+			_onButtonClick();
+		}
+	}
+
+	public void drawChildGui(Rect position, GUIStyle style) {
+
+		Pressed = GUI.Toggle(position, _pressed, (_pressed) ? ContentPressed : Content, style);
+
+		if (GUI.changed && _onButtonClick != null) {
+			_onButtonClick();
 		}
 
-		if (!isChild) {
-			GUI.depth = _depth;
-			_pressed = GUI.Toggle(_position, _pressed, _content, _style);
-			if (GUI.changed && _funcReturn != null) {
-				_funcReturn();
-			}
-		}
+		// _pressed = GUILayout.Toggle (_pressed, _content, _style, GUILayout.Width (_position.width), GUILayout.Height (_position.height));
 	}
 
-	
-	public OnClickFunc funcReturn
+
+	public bool Pressed {
+		set {
+			_pressed = value;
+
+		}
+		get { return _pressed; }
+	}
+
+	public OnClickFunc onButtonClick
 	{
-		get{ return _funcReturn;  }
-		set{ _funcReturn = value; }
+		get { return _onButtonClick; }
+		set { _onButtonClick = value; }
 	}
 }

@@ -6,14 +6,8 @@ using System.Collections;
 [ExecuteInEditMode]
 public class sGuiScrollerBox : MonoBehaviour {
 
-	public int _depth = 1;
-	public bool _enabled = true;
-	public Rect _position;
-	
 	public Vector2 _scroll;
 	
-	public Texture2D _box;
-	private RectOffset _borderBackground;
 	public RectOffset _boxPadding;
 
 	public Texture2D _scrollerBg;
@@ -22,14 +16,14 @@ public class sGuiScrollerBox : MonoBehaviour {
 	public int _scrollerMargin;
 	public RectOffset _scrollerPadding;
 	public RectOffset _scrollerThumbPadding;
-	
-	public GUIStyle _style;
+
 	
 	public GUIStyle _styleScroller;
 	public GUIStyle _styleThumb;
 
-	public delegate void OnGuiItem();
-	private OnGuiItem _guiItem;
+
+	public Rect _view = new Rect();
+	public Rect _boxPos;
 	
 	void Start () {
 
@@ -38,15 +32,7 @@ public class sGuiScrollerBox : MonoBehaviour {
 	
 	public void updateStyles() {
 
-		if(_style == null) {
-			_style = new GUIStyle();
-		}
-
-		if(_box != null) {
-			_borderBackground = new RectOffset(0,0,0,0);
-			_borderBackground.left = _borderBackground.right = (int)(_box.width * 0.5);
-			_borderBackground.top = _borderBackground.bottom = (int)(_box.height * 0.5);
-		}
+		
 
 		if(_scrollerBg != null) {
 			_styleScroller.border.left = _styleScroller.border.right = (int)(_scrollerBg.width * 0.5);
@@ -68,12 +54,7 @@ public class sGuiScrollerBox : MonoBehaviour {
 		_styleThumb.normal.background = _scrollerThumb;
 		_styleThumb.overflow = _scrollerThumbPadding;
 		
-		_style.normal.background = _box;
-		if (_borderBackground != null) {
-			_style.border = _borderBackground;
-		}
-
-		_style.padding = _boxPadding;
+		
 
 
 		//Debug.Log (this.transform.childCount);
@@ -82,14 +63,11 @@ public class sGuiScrollerBox : MonoBehaviour {
 		}
 		
 	}
-	
-	
-	void OnValidate() {
-		updateStyles();
-    }
 
-	public Rect _view = new Rect(0,0,200,600);
-	public Rect _boxPos;
+
+
+
+
 
 	void onGuiWindow(int windowId) {
 
@@ -111,15 +89,11 @@ public class sGuiScrollerBox : MonoBehaviour {
 	
 	void OnGUI() {
 
-		GUI.enabled = _enabled;
-		GUI.depth = _depth;
-
+		
 		GUI.skin.verticalScrollbarThumb = _styleThumb;
 		GUI.skin.verticalScrollbar = _styleScroller;
-		//GUILayout.BeginArea(_position, _style);
-		GUI.BeginGroup (_position, _style);
-		//GUI.Window (2, _position, onGuiWindow, "", _style);
-
+		
+		//GUI.BeginGroup (_position, _style);
 
 		_scroll = GUI.BeginScrollView (_boxPos, _scroll, _view, false, true);
 		
@@ -141,10 +115,4 @@ public class sGuiScrollerBox : MonoBehaviour {
 		GUI.EndGroup ();
 		//GUILayout.EndArea();
 	}
-
-	public OnGuiItem guiItem {
-		set { _guiItem = value; }
-		get { return _guiItem; }
-	}
-
 }

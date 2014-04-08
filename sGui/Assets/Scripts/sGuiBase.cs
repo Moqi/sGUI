@@ -169,7 +169,7 @@ public class sGuiBase : MonoBehaviour {
 
 		DrawGuiBase();
 		CalculateRelativePos(parent);
-		onChildGuiFunc(_relativePos, _style);
+		onGuiFunc(_relativePos, _style);
 
 	}
 
