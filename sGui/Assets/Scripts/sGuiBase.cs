@@ -13,6 +13,12 @@ public class DepthSlider {
 }
 
 
+
+public enum DirectionBox
+{
+	Vertical, Horizontal
+}
+
 [ExecuteInEditMode]
 public class sGuiBase : MonoBehaviour {
 

@@ -5,17 +5,12 @@ using System.Collections.Generic;
 
 
 
-public enum OverflowBox
-{
-	Vertical, Horizontal
-}
-
 [ExecuteInEditMode]
 public class sGuiBox : MonoBehaviour {
 
 	// TODO
 	public bool Scroller;
-	public OverflowBox ScrollerOverflow;
+	public DirectionBox ScrollerOverflow;
 	public TextAnchor ChildLocation;
 
 	public bool AlphaToChild;

@@ -6,93 +6,104 @@ using System.Collections;
 [ExecuteInEditMode]
 public class sGuiSlider : MonoBehaviour {
 
-	public int _depth = 1;
-	public Rect _position;
+	public DirectionBox Direction;
+	public Texture2D SliderTexture;
+
+	private RectOffset SliderBorder = new RectOffset();
+	//private RectOffset SliderSize = new RectOffset();
 	
 	
-	public Texture2D _slider;
-	private RectOffset _sliderBorder = new RectOffset();
-	public RectOffset _sliderSize = new RectOffset();
-	
-	
-	public Texture2D _sliderThumb;
-	public RectOffset _sliderThumbSize = new RectOffset();
-	private RectOffset _sliderThumbBorder = new RectOffset();
-	private RectOffset _sliderThumbPadding = new RectOffset();
-	
-	public Vector2 _contentOffset;
-	public ImagePosition _contentImagePosition;
-	
-	public GUIStyle _sliderBarStyle = new GUIStyle();
-	public GUIStyle _sliderThumbStyle = new GUIStyle();
+	public Texture2D SliderThumbTexture;
+	public RectOffset SliderThumbSize = new RectOffset();
+
+	private RectOffset SliderThumbBorder = new RectOffset();
+	//private RectOffset SliderThumbPadding = new RectOffset();
+	private GUIStyle SliderBarStyle = new GUIStyle();
+	private GUIStyle SliderThumbStyle = new GUIStyle();
 	
 	
 	public float _minValue = 0.0f;
 	public float _maxValue = 100.0f;
 	private float _value = 0.0f;
 
-	public bool isChild = false;
-	
-	
-	void Start () {
-		
+
+	void Start() {
 		updateStyles();
-		
+	}
+	void OnValidate() {
+		updateStyles();
+	}
+	void Awake() {
+		updateStyles();
+	}
+	void OnEnable() {
+		updateStyles();
 	}
 	
 	public void updateStyles() {
-		if(_sliderBarStyle == null) {
-			_sliderBarStyle = new GUIStyle();
-			_sliderThumbStyle = new GUIStyle();
-		}
-		
-		if(_slider != null) {
-			_sliderBorder.left = _sliderBorder.right = (int)(_slider.width * 0.5);
-			_sliderBorder.top = _sliderBorder.bottom = (int)(_slider.height * 0.5);
-		}
-		if(_sliderThumb != null) {
-			_sliderThumbPadding.left = _sliderThumbPadding.right = _sliderThumbBorder.left = _sliderThumbBorder.right = (int)(_sliderThumb.width * 0.5);
-			
-			_sliderThumbBorder.top = _sliderThumbBorder.bottom = (int)(_sliderThumb.height * 0.5);
-		}
-		
-		_sliderBarStyle.normal.background = _slider;
-		_sliderBarStyle.border = _sliderBorder;
-		_sliderThumbStyle.overflow = _sliderSize;
-		
-		
-		_sliderThumbStyle.normal.background = _sliderThumb;
-		_sliderThumbStyle.border = _sliderThumbBorder;
-		_sliderThumbStyle.padding = _sliderThumbPadding;
-		_sliderThumbStyle.overflow = _sliderThumbSize;
-		
-	}
-	
-	
-	void OnValidate() {
-		updateStyles();
-    }
 
 
-	public void childGUI(bool isModal) {
-		isChild = true;
-		//Rect _pos = new Rect (_position.x + _boxPos.x, _position.y + _boxPos.y, _position.width, _position.height);
-		_value = GUI.HorizontalSlider(_position, _value, _minValue, _maxValue, _sliderBarStyle, _sliderThumbStyle);
-		
-	}
-	
-	public void childGUI() {
-		isChild = true;
-		_value = GUILayout.HorizontalSlider(_value, _minValue, _maxValue, _sliderBarStyle, _sliderThumbStyle);
-	}
-	
-	void OnGUI() {
-		if (!isChild) {
-			GUI.depth = _depth;
-			_value = GUI.HorizontalSlider (_position, _value, _minValue, _maxValue, _sliderBarStyle, _sliderThumbStyle);
+		if (this.GetComponent<sGuiBase>() != null) {
+			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
+			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
 		}
+
+		if (this.GetComponent<sGuiBase>() == null) {
+			return;
+		}
+
+
+		if (SliderBarStyle == null) {
+			SliderBarStyle = new GUIStyle();
+			SliderThumbStyle = new GUIStyle();
+		}
+
+
+		if (SliderTexture != null) {
+			SliderBorder.left = SliderBorder.right = (int)(SliderTexture.width * 0.5f);
+			SliderBorder.top = SliderBorder.bottom = (int)(SliderTexture.height * 0.5f);
+		}
+		if (SliderThumbTexture != null) {
+			// SliderThumbPadding.left = SliderThumbPadding.right = SliderThumbBorder.left = SliderThumbBorder.right = (int)(SliderThumbTexture.width * 0.5f);
+			SliderThumbBorder.left = SliderThumbBorder.right = (int)(SliderThumbTexture.width * 0.5f);
+			SliderThumbBorder.top = SliderThumbBorder.bottom = (int)(SliderThumbTexture.height * 0.5f);
+		}
+
+		SliderBarStyle.normal.background = SliderTexture;
+		SliderBarStyle.border = SliderBorder;
+
+
+		SliderThumbStyle.normal.background = SliderThumbTexture;
+		SliderThumbStyle.overflow = SliderThumbSize;
 		
 	}
+
+
+
+
+	public void drawGui(Rect position, GUIStyle style) {
+		switch(Direction) {
+			case DirectionBox.Horizontal:
+				_value = GUI.HorizontalSlider(position, _value, _minValue, _maxValue, SliderBarStyle, SliderThumbStyle);
+				break;
+			case DirectionBox.Vertical:
+				_value = GUI.VerticalSlider(position, _value, _minValue, _maxValue, SliderBarStyle, SliderThumbStyle);
+				break;
+		}
+	}
+
+	public void drawChildGui(Rect position, GUIStyle style) {
+		switch (Direction) {
+			case DirectionBox.Horizontal:
+				_value = GUI.HorizontalSlider(position, _value, _minValue, _maxValue, SliderBarStyle, SliderThumbStyle);
+				break;
+			case DirectionBox.Vertical:
+				_value = GUI.VerticalSlider(position, _value, _minValue, _maxValue, SliderBarStyle, SliderThumbStyle);
+				break;
+		}
+		// _value = GUILayout.HorizontalSlider(_value, _minValue, _maxValue, _sliderBarStyle, _sliderThumbStyle);
+	}
+
 	
 	public float value
     {
