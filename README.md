@@ -2,7 +2,9 @@ sGUI
 ====
 
 Unity3d GUI helper.
-Current Version 1.0
+Current Version 1.0.1
+
+[Download Package](https://github.com/sharbelfs/sGUI/raw/master/sGui-1.0.1.unitypackage)
 
 
 Features
@@ -154,3 +156,13 @@ In the Box, the 'Location' of the child is works
 ##### Script
 
 * Pressed: return true if its pressed
+
+
+
+Changes
+====
+
+### 1.0.1
+
+* Fixed folder systema
+* Fixed package file
