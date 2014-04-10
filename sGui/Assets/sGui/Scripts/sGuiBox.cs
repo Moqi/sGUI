@@ -6,13 +6,12 @@ using System.Collections.Generic;
 
 
 [ExecuteInEditMode]
-public class sGuiBox : MonoBehaviour {
+public class sGuiBox : sGuiBase {
 
 	// TODO
 
 	public bool AlphaToChild;
 	public bool EnabledToChild;
-
 
 	public bool Scroller;
 	public DirectionBox ScrollerOverflow;
@@ -41,32 +40,11 @@ public class sGuiBox : MonoBehaviour {
 
 
 
-	void Start() {
 
-		updateStyles();
-	}
-	void OnValidate() {
-		updateStyles();
-	}
-	void Awake() {
-		updateStyles();
-	}
-	void OnEnable() {
-		updateStyles();
-	}
-	
-	public void updateStyles() {
+	public override void updateStyles() {
 
-		if (this.GetComponent<sGuiBase>() != null) {
-			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
-			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
-		}
+		base.updateStyles();
 
-		if (this.GetComponent<sGuiBase>() == null) {
-			return;
-		}
-
-		GUIStyle _style = this.GetComponent<sGuiBase>().Style;
 		if (_styleScroller == null) {
 			_styleScroller = new GUIStyle();
 			_styleThumb = new GUIStyle();
@@ -102,17 +80,14 @@ public class sGuiBox : MonoBehaviour {
 					child.GetComponent<sGuiBase>().Alpha = this.GetComponent<sGuiBase>().Alpha;
 				}
 				if (EnabledToChild) {
-					child.GetComponent<sGuiBase>().isEnabled = this.GetComponent<sGuiBase>().isEnabled;
+					child.GetComponent<sGuiBase>().isDisabled = this.GetComponent<sGuiBase>().isDisabled;
 				}
 				
 			}
 		}
-		
-		this.GetComponent<sGuiBase>().Style = _style;
-
 	}
 
-	public void drawGui(Rect position, GUIStyle style) {
+	public override void DrawGUI(Rect position, GUIStyle style) {
 
 		
 		GUI.BeginGroup(position, style);
@@ -133,7 +108,7 @@ public class sGuiBox : MonoBehaviour {
 
 	}
 
-	public void drawChildGui(Rect position, GUIStyle style) {
+	public override void DrawChildGUI(Rect position, GUIStyle style) {
 
 		
 		if (Scroller) {
