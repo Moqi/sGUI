@@ -7,7 +7,7 @@ using System.Collections;
 public class sGuiText : sGuiBase {
 
 
-
+	public bool IsPassword = false;
 	public string Text;
 	public int MaxLength = 50;
 
@@ -57,11 +57,19 @@ public class sGuiText : sGuiBase {
 
 
 	public override void DrawGUI(Rect position, GUIStyle style) {
-		Text = GUI.TextField(position, Text, MaxLength, style);
+		if (IsPassword) {
+			Text = GUI.PasswordField(position, Text, '*', MaxLength, style);
+		} else {
+			Text = GUI.TextField(position, Text, MaxLength, style);
+		}
 	}
 
 	public override void DrawChildGUI(Rect position, GUIStyle style) {
-		Text = GUI.TextField(position, Text, MaxLength, style);
+		if (IsPassword) {
+			Text = GUI.PasswordField(position, Text, '*', MaxLength, style);
+		} else {
+			Text = GUI.TextField(position, Text, MaxLength, style);
+		}
 	}
 
 }
