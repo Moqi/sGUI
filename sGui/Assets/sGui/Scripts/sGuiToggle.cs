@@ -4,7 +4,7 @@ using System.Collections;
 
 
 [ExecuteInEditMode]
-public class sGuiToggle : MonoBehaviour {
+public class sGuiToggle : sGuiBase {
 	
 	public Font FontFamily;
 	public int FontSize = 10;
@@ -28,51 +28,29 @@ public class sGuiToggle : MonoBehaviour {
 	
 	public delegate void OnClickFunc();
 
-	void Start() {
-		updateStyles();
-	}
-	void OnValidate() {
-		updateStyles();
-	}
-	void Awake() {
-		updateStyles();
-	}
-	void OnEnable() {
-		updateStyles();
-	}
-	
-	public void updateStyles() {
 
-		if (this.GetComponent<sGuiBase>() != null) {
-			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
-			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
-		}
 
-		if (this.GetComponent<sGuiBase>() == null) {
-			return;
-		}
+	public override void updateStyles() {
 
-		GUIStyle _style = this.GetComponent<sGuiBase>().Style;
+		base.updateStyles();
 		
-		_style.onNormal.background = BackgroundTexturePressed;
-		
-		_style.contentOffset = ContentOffset;
-		_style.imagePosition = ContentImagePosition;
-		
-		_style.alignment = TextAlign;
-		_style.fontSize = FontSize;
-		_style.font = FontFamily;
-		_style.richText = true;
-		_style.wordWrap = true;
-		_style.normal.textColor = FontColor;
-		_style.onNormal.textColor = FontColorPressed;
+		Style.onNormal.background = BackgroundTexturePressed;
 
+		Style.contentOffset = ContentOffset;
+		Style.imagePosition = ContentImagePosition;
 
-		this.GetComponent<sGuiBase>().Style = _style;
+		Style.alignment = TextAlign;
+		Style.fontSize = FontSize;
+		Style.font = FontFamily;
+		Style.richText = true;
+		Style.wordWrap = true;
+		Style.normal.textColor = FontColor;
+		Style.onNormal.textColor = FontColorPressed;
+
 	}
 
 
-	public void drawGui(Rect position, GUIStyle style) {
+	public override void DrawGUI(Rect position, GUIStyle style) {
 
 		Pressed = GUI.Toggle(position, _pressed, (_pressed) ? ContentPressed : Content, style);
 
@@ -81,7 +59,7 @@ public class sGuiToggle : MonoBehaviour {
 		}
 	}
 
-	public void drawChildGui(Rect position, GUIStyle style) {
+	public override void DrawChildGUI(Rect position, GUIStyle style) {
 
 		Pressed = GUI.Toggle(position, _pressed, (_pressed) ? ContentPressed : Content, style);
 

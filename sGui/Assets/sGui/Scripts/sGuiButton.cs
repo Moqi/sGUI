@@ -4,7 +4,7 @@ using System.Collections;
 
 
 [ExecuteInEditMode]
-public class sGuiButton : MonoBehaviour {
+public class sGuiButton : sGuiBase {
 	
 	public bool _hasAudio = true;
 	
@@ -31,51 +31,31 @@ public class sGuiButton : MonoBehaviour {
 	
 	public delegate void OnClickFunc(GameObject curr = null);
 	
-	void Start () {
-		updateStyles();
-	}
-	void OnValidate() {
-		updateStyles();
-	}
-	void Awake() {
-		updateStyles();
-	}
-	void OnEnable() {
-		updateStyles();
-	}
 	
-	public void updateStyles() {
+	
+	public override void updateStyles() {
 
-		if(this.GetComponent<sGuiBase>() != null) {
-			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
-			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
-		}
-
-		if(this.GetComponent<sGuiBase>() == null) {
-			return;
-		}
-		GUIStyle _style = this.GetComponent<sGuiBase>().Style;
-
-		_style.hover.background = BackgroundHover;
-		_style.active.background = BackgroundPressed;
+		base.updateStyles();
 		
-		_style.contentOffset = ContentOffset;
-		_style.imagePosition = ContentImagePosition;
-		
-		_style.alignment = TextAlign;
-		_style.fontSize = FontSize;
-		_style.font = FontFamily;
-		_style.richText = true;
-		_style.wordWrap = true;
-		_style.normal.textColor = FontColor;
-		_style.hover.textColor = FontColorHover;
-		_style.active.textColor = FontColorActive;
+		Style.hover.background = BackgroundHover;
+		Style.active.background = BackgroundPressed;
 
-		this.GetComponent<sGuiBase>().Style = _style;
+		Style.contentOffset = ContentOffset;
+		Style.imagePosition = ContentImagePosition;
+
+		Style.alignment = TextAlign;
+		Style.fontSize = FontSize;
+		Style.font = FontFamily;
+		Style.richText = true;
+		Style.wordWrap = true;
+		Style.normal.textColor = FontColor;
+		Style.hover.textColor = FontColorHover;
+		Style.active.textColor = FontColorActive;
+
 	}
 
 
-	public void drawGui(Rect position, GUIStyle style) {
+	public override void DrawGUI(Rect position, GUIStyle style) {
 
 		
 		bool _clicked = GUI.Button(position, Content, style);
@@ -92,10 +72,9 @@ public class sGuiButton : MonoBehaviour {
 		}
 
 	}
-	
-	public void drawChildGui(Rect position, GUIStyle style) {
 
-		//bool _clicked = GUILayout.Button(Content, style, GUILayout.Width(position.width), GUILayout.Height(position.height));
+	public override void DrawChildGUI(Rect position, GUIStyle style) {
+
 		bool _clicked = GUI.Button(position, Content, style);
 		
 		if (_clicked) {

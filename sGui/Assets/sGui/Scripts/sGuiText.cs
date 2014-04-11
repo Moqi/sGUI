@@ -4,7 +4,7 @@ using System.Collections;
 
 
 [ExecuteInEditMode]
-public class sGuiText : MonoBehaviour {
+public class sGuiText : sGuiBase {
 
 
 
@@ -23,46 +23,23 @@ public class sGuiText : MonoBehaviour {
 	public Vector2 ContentOffset;
 
 	
-	void Start () {
-		updateStyles();
-	}
-	void OnValidate() {
-		updateStyles();
-	}
-	void Awake() {
-		updateStyles();
-	}
-	void OnEnable() {
-		updateStyles();
-	}
-	
-	public void updateStyles() {
+	public override void updateStyles() {
 
-		if(this.GetComponent<sGuiBase>() != null) {
-			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
-			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
-		}
-
-		if(this.GetComponent<sGuiBase>() == null) {
-			return;
-		}
-
-		GUIStyle _style = this.GetComponent<sGuiBase>().Style;
+		base.updateStyles();
 		
-		_style.focused.background = BackgroundFocus;
-		_style.focused.textColor = FontFocusColor;
+		Style.focused.background = BackgroundFocus;
+		Style.focused.textColor = FontFocusColor;
 
-		_style.normal.textColor = FontColor;
-		_style.padding = Padding;
-		_style.contentOffset = ContentOffset;
-		
-		_style.alignment = TextAlign;
-		_style.fontSize = FontSize;
-		_style.font = FontFamily;
-		_style.richText = true;
-		_style.wordWrap = true;
+		Style.normal.textColor = FontColor;
+		Style.padding = Padding;
+		Style.contentOffset = ContentOffset;
 
-		this.GetComponent<sGuiBase>().Style = _style;
+		Style.alignment = TextAlign;
+		Style.fontSize = FontSize;
+		Style.font = FontFamily;
+		Style.richText = true;
+		Style.wordWrap = true;
+
 	}
 
     void Update() {
@@ -79,11 +56,11 @@ public class sGuiText : MonoBehaviour {
     }
 
 
-	public void drawGui(Rect position, GUIStyle style) {
+	public override void DrawGUI(Rect position, GUIStyle style) {
 		Text = GUI.TextField(position, Text, MaxLength, style);
 	}
-	
-	public void drawChildGui(Rect position, GUIStyle style) {
+
+	public override void DrawChildGUI(Rect position, GUIStyle style) {
 		Text = GUI.TextField(position, Text, MaxLength, style);
 	}
 

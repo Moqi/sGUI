@@ -25,32 +25,33 @@ public class sGuiBase : MonoBehaviour {
 	public AlphaSlider Alpha;
 	public DepthSlider Depth;
 	public bool isChild = false;
-	public bool isEnabled = true;
+	public bool isDisabled = false;
 	public TextAnchor Location;
 	public Rect Position;
 
 
 	public Texture2D BackgroundTexture;
 	public Color BackgroundColor = new Color(1,1,1,1);
+
+
 	private RectOffset BackgroundBorder = new RectOffset();
-	
+	private Rect _relativePos;
 	private GUIStyle _style = new GUIStyle();
 
-
-	public OnGuiFunc onGuiFunc;
-	public OnGuiFunc onChildGuiFunc;
-
-	private Rect _relativePos;
-	public delegate void OnGuiFunc(Rect position, GUIStyle style);
-	public delegate void OnChildGuiFunc(Rect position, GUIStyle style);
-
 	void Start () {
-		
 		updateStyles();
-		
+	}
+	void OnValidate() {
+		updateStyles();
+	}
+	void Awake() {
+		updateStyles();
+	}
+	void OnEnable() {
+		updateStyles();
 	}
 	
-	public void updateStyles() {
+	public virtual void updateStyles() {
 		if(_style == null) {
 			_style = new GUIStyle();
 		}
@@ -63,8 +64,6 @@ public class sGuiBase : MonoBehaviour {
 		_style.normal.background = BackgroundTexture;
 		_style.border = BackgroundBorder;
 		
-
-
 
 		CalculateRelativePos();
 	}
@@ -133,16 +132,6 @@ public class sGuiBase : MonoBehaviour {
 	}
 	
 	
-	void OnValidate() {
-		updateStyles();
-	}
-	void Awake() {
-		updateStyles();
-	}
-	void OnEnable() {
-		updateStyles();
-	}
-
 
 	public Vector2 childGUI(Rect parent, Vector2 pos) {
 		if (!this.gameObject.activeSelf) {
@@ -155,12 +144,12 @@ public class sGuiBase : MonoBehaviour {
 
 		_relativePos.x += pos.x;
 		_relativePos.y += pos.y;
-		
-		onChildGuiFunc(_relativePos, _style);
+
+		DrawChildGUI(_relativePos, _style);
 
 		return new Vector2(_relativePos.x + _relativePos.width, _relativePos.y + _relativePos.height);
 	}
-	
+
 	public void childGUI(Rect parent) {
 		if (!this.gameObject.activeSelf) {
 			return;
@@ -169,7 +158,7 @@ public class sGuiBase : MonoBehaviour {
 
 		DrawGuiBase();
 		CalculateRelativePos(parent);
-		onGuiFunc(_relativePos, _style);
+		DrawGUI(_relativePos, _style);
 
 	}
 
@@ -180,15 +169,21 @@ public class sGuiBase : MonoBehaviour {
 		}
 
 		if (!isChild) {
-			
 			DrawGuiBase();
 			CalculateRelativePos();
-			onGuiFunc(_relativePos, _style);
+			DrawGUI(_relativePos, _style);
 		}
 	}
 
+	public virtual void DrawChildGUI(Rect position, GUIStyle style) {
+
+	}
+	public virtual void DrawGUI(Rect position, GUIStyle style) {
+
+	}
+
 	public void DrawGuiBase() {
-		GUI.enabled = isEnabled;
+		GUI.enabled = !isDisabled;
 		GUI.depth = Depth.value;
 		GUI.color = new Color( 1, 1, 1, Alpha.value);
 		GUI.backgroundColor = BackgroundColor;

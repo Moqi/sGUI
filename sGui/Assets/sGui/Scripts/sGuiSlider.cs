@@ -4,7 +4,7 @@ using System.Collections;
 
 
 [ExecuteInEditMode]
-public class sGuiSlider : MonoBehaviour {
+public class sGuiSlider : sGuiBase {
 
 	public DirectionBox Direction;
 	public Texture2D SliderTexture;
@@ -27,31 +27,9 @@ public class sGuiSlider : MonoBehaviour {
 	private float _value = 0.0f;
 
 
-	void Start() {
-		updateStyles();
-	}
-	void OnValidate() {
-		updateStyles();
-	}
-	void Awake() {
-		updateStyles();
-	}
-	void OnEnable() {
-		updateStyles();
-	}
-	
-	public void updateStyles() {
+	public override void updateStyles() {
 
-
-		if (this.GetComponent<sGuiBase>() != null) {
-			this.GetComponent<sGuiBase>().onGuiFunc = drawGui;
-			this.GetComponent<sGuiBase>().onChildGuiFunc = drawChildGui;
-		}
-
-		if (this.GetComponent<sGuiBase>() == null) {
-			return;
-		}
-
+		base.updateStyles();
 
 		if (SliderBarStyle == null) {
 			SliderBarStyle = new GUIStyle();
@@ -81,7 +59,7 @@ public class sGuiSlider : MonoBehaviour {
 
 
 
-	public void drawGui(Rect position, GUIStyle style) {
+	public override void DrawGUI(Rect position, GUIStyle style) {
 		switch(Direction) {
 			case DirectionBox.Horizontal:
 				_value = GUI.HorizontalSlider(position, _value, _minValue, _maxValue, SliderBarStyle, SliderThumbStyle);
@@ -92,7 +70,7 @@ public class sGuiSlider : MonoBehaviour {
 		}
 	}
 
-	public void drawChildGui(Rect position, GUIStyle style) {
+	public override void DrawChildGUI(Rect position, GUIStyle style) {
 		switch (Direction) {
 			case DirectionBox.Horizontal:
 				_value = GUI.HorizontalSlider(position, _value, _minValue, _maxValue, SliderBarStyle, SliderThumbStyle);
