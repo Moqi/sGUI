@@ -2,10 +2,11 @@ sGUI
 ====
 
 Unity3d GUI helper.
-Current Version 1.0.1
+Current Version 1.1
 
-[Download Package](https://github.com/sharbelfs/sGUI/raw/master/sGui-1.0.1.unitypackage)
+[Download Package](https://github.com/sharbelfs/sGUI/raw/master/sGui-1.1.unitypackage)
 
+Assets thanks to [Kenney](http://www.kenney.nl)
 
 Features
 ====
@@ -161,6 +162,11 @@ In the Box, the 'Location' of the child is works
 
 Changes
 ====
+
+### 1.1
+* Base redone
+* assets formatted
+
 
 ### 1.0.1
 
