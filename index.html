@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Sgui by sharbelfs</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Sgui</h1>
+          <h2>Unity3d GUI helper</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/sharbelfs/sGUI/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/sharbelfs/sGUI/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/sharbelfs/sGUI" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="sgui" class="anchor" href="#sgui"><span class="octicon octicon-link"></span></a>sGUI</h1>
+
+<p>Unity3d GUI helper.
+Current Version 1.1</p>
+
+<p><a href="https://github.com/sharbelfs/sGUI/raw/master/sGui-1.1.unitypackage">Download Package</a></p>
+
+<p>Assets thanks to <a href="http://www.kenney.nl">Kenney</a></p>
+
+<h1>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h1>
+
+<p>Drag the prefab into the scene and configure as you like.</p>
+
+<ul>
+<li><a href="#guibase">GuiBase</a></li>
+<li><a href="#guibox">GuiBox</a></li>
+<li><a href="#guibutton">GuiButton</a></li>
+<li><a href="#guiimage">GuiImage</a></li>
+<li><a href="#guilabel">GuiLabel</a></li>
+<li><a href="#guislider">GuiSlider</a></li>
+<li><a href="#guitextarea">GuiTextarea</a></li>
+<li><a href="#guitoggle">GuiToggle</a></li>
+</ul><h2>
+<a name="guibase" class="anchor" href="#guibase"><span class="octicon octicon-link"></span></a>GuiBase</h2>
+
+<p>All the elements have the base script. Its the basic structure of the GUI.
+Although its possible to extend and create others elements.</p>
+
+<ul>
+<li>Alpha: Transparency of the element.</li>
+<li>Depth: z-index of the element. Draw order is from the lower to the higher.</li>
+<li>Is Child: is marked automatic if the element is child from another one.</li>
+<li>is Enabled: set if you can interact with the gui element</li>
+<li>Location: Location base on the screen</li>
+<li>Position: position in pixels of the element in the screen</li>
+<li>Background Texture: The image is resized to fit the element.</li>
+<li>Background Color: Color RGBA of the background element</li>
+</ul><h2>
+<a name="guibox" class="anchor" href="#guibox"><span class="octicon octicon-link"></span></a>GuiBox</h2>
+
+<p>GuiBox are elements that you can put child on it to make a box with content.</p>
+
+<ul>
+<li>Alpha to Child: if true the 'Alpha' of the child is the same of the parent. Its only valid for the first level child</li>
+<li>Enabled to Child: if true the 'isEnabled' of the child is the same of the parent. Its only valid for the first level child</li>
+<li>Scroller: Set the box to be scroller or not.</li>
+</ul><h3>
+<a name="box" class="anchor" href="#box"><span class="octicon octicon-link"></span></a>Box</h3>
+
+<p>if the Scroller is disabled, the element is a simple box.
+In the Box, the 'Location' of the child is works</p>
+
+<h3>
+<a name="scrollerbox" class="anchor" href="#scrollerbox"><span class="octicon octicon-link"></span></a>ScrollerBox</h3>
+
+<p><em>TODO</em> - need some improvement, not tested</p>
+
+<ul>
+<li>Scroller Overflow</li>
+<li>Child Location</li>
+<li>Scroller Bg</li>
+<li>Scroller Thumb</li>
+<li>Scroller Size</li>
+<li>Scroller Margin</li>
+<li>Scroller Padding</li>
+</ul><h2>
+<a name="guibutton" class="anchor" href="#guibutton"><span class="octicon octicon-link"></span></a>GuiButton</h2>
+
+<ul>
+<li>Has Audio: if its enabled, you need to set the sound in the "Audio Source"</li>
+<li>Background Hover:</li>
+<li>Background Pressed:</li>
+<li>Font Family:</li>
+<li>Font Size:</li>
+<li>Font Color:</li>
+<li>Font Hover Color:</li>
+<li>Font Pressed Color:</li>
+<li>Text Align:</li>
+<li>Content:</li>
+<li>Content Offset:</li>
+<li>Content Image Position:</li>
+<li>Margin:</li>
+</ul><h5>
+<a name="script" class="anchor" href="#script"><span class="octicon octicon-link"></span></a>Script</h5>
+
+<ul>
+<li>onClickButton: </li>
+</ul><pre><code>  onClickButton(GameObject current) {
+    // do some action when button is clicked
+  }
+</code></pre>
+
+<h2>
+<a name="guiimage" class="anchor" href="#guiimage"><span class="octicon octicon-link"></span></a>GuiImage</h2>
+
+<ul>
+<li>Image:</li>
+<li>Scale Mode:</li>
+</ul><h2>
+<a name="guilabel" class="anchor" href="#guilabel"><span class="octicon octicon-link"></span></a>GuiLabel</h2>
+
+<ul>
+<li>Font Family:</li>
+<li>Font Size:</li>
+<li>Font Color:</li>
+<li>Text Align:</li>
+<li>Content:</li>
+<li>Content Offset:</li>
+<li>Content Image Position:</li>
+<li>Margin:</li>
+</ul><h2>
+<a name="guislider" class="anchor" href="#guislider"><span class="octicon octicon-link"></span></a>GuiSlider</h2>
+
+<ul>
+<li>Direction: Vertical or Horizontal</li>
+<li>Slider Texture:</li>
+<li>Slider Thumb Texture:</li>
+<li>Slider Thumb Size:</li>
+<li>Min Value: float number</li>
+<li>Max Value: float number</li>
+</ul><h5>
+<a name="script-1" class="anchor" href="#script-1"><span class="octicon octicon-link"></span></a>Script</h5>
+
+<ul>
+<li>Value: Return the current float value of the slider</li>
+</ul><h2>
+<a name="guitextarea" class="anchor" href="#guitextarea"><span class="octicon octicon-link"></span></a>GuiTextarea</h2>
+
+<ul>
+<li>Text: text typed in the area. You can set initial text and get in from script</li>
+<li>Max Length: set '0' to unlimited character</li>
+<li>Background Focus:</li>
+<li>Padding:</li>
+<li>Font Family:</li>
+<li>Font Size:</li>
+<li>Font Color:</li>
+<li>Font Focus Color:</li>
+<li>Text Align:</li>
+<li>Content Offset:</li>
+<li>Margin:</li>
+</ul><h2>
+<a name="guitoggle" class="anchor" href="#guitoggle"><span class="octicon octicon-link"></span></a>GuiToggle</h2>
+
+<ul>
+<li>Font Family</li>
+<li>Font Size</li>
+<li>Text Align</li>
+<li>Content</li>
+<li>Font Color</li>
+<li>Background Texture Pressed: Background of the element when its pressed</li>
+<li>Content Pressed: you need to set the content, even if its the same</li>
+<li>Font Color Pressed:</li>
+<li>Content Offset:</li>
+<li>Content Image Position: Image position is the same for normal and pressed state</li>
+</ul><h5>
+<a name="script-2" class="anchor" href="#script-2"><span class="octicon octicon-link"></span></a>Script</h5>
+
+<ul>
+<li>Pressed: return true if its pressed</li>
+</ul><h1>
+<a name="changes" class="anchor" href="#changes"><span class="octicon octicon-link"></span></a>Changes</h1>
+
+<h3>
+<a name="11" class="anchor" href="#11"><span class="octicon octicon-link"></span></a>1.1</h3>
+
+<ul>
+<li>Base redone</li>
+<li>assets formatted</li>
+</ul><h3>
+<a name="101" class="anchor" href="#101"><span class="octicon octicon-link"></span></a>1.0.1</h3>
+
+<ul>
+<li>Fixed folder systema</li>
+<li>Fixed package file</li>
+</ul>
+        </section>
+
+        <footer>
+          Sgui is maintained by <a href="https://github.com/sharbelfs">sharbelfs</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
