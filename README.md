@@ -57,7 +57,6 @@ In the Box, the 'Location' of the child is works
 
 ### ScrollerBox
 
-*TODO* - need some improvement, not tested
 
 * Scroller Overflow
 * Child Location
@@ -65,7 +64,7 @@ In the Box, the 'Location' of the child is works
 * Scroller Thumb
 * Scroller Size
 * Scroller Margin
-* Scroller Padding
+* Scroller Box Padding
 
 
 ## GuiButton
@@ -140,6 +139,7 @@ In the Box, the 'Location' of the child is works
 * Text Align:
 * Content Offset:
 * Margin:
+* Is Password: mark to set the textfield to act like password
 
 ## GuiToggle
 
@@ -165,7 +165,7 @@ Changes
 
 ### 1.2
 * Scroller Box Vertical / Horizontal
-
+* Password
 
 ### 1.1
 * Base redone
