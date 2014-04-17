@@ -2,9 +2,9 @@ sGUI
 ====
 
 Unity3d GUI helper.
-Current Version 1.1
+Current Version 1.2
 
-[Download Package](https://github.com/sharbelfs/sGUI/raw/master/sGui-1.1.unitypackage)
+[Download Package](https://github.com/sharbelfs/sGUI/raw/master/sGui-1.2.unitypackage)
 
 Assets thanks to [Kenney](http://www.kenney.nl)
 
@@ -162,6 +162,10 @@ In the Box, the 'Location' of the child is works
 
 Changes
 ====
+
+### 1.2
+* Scroller Box Vertical / Horizontal
+
 
 ### 1.1
 * Base redone
