@@ -27,7 +27,6 @@ public class sGuiBox : sGuiBase {
 	public Texture2D _scrollerThumb;
 	public float _scrollerBarSize;
 	public RectOffset _scrollerBarPadding;
-	public RectOffset _scrollerPadding;
 	public RectOffset _scrollerMargin;
 
 	public GUIStyle _styleScroller;
@@ -65,8 +64,8 @@ public class sGuiBox : sGuiBase {
 		
 		_styleScroller.padding = new RectOffset(_scrollerBarPadding.left,
 												_scrollerBarPadding.right,
-												_scrollerBarPadding.top - _scrollerPadding.top,
-												_scrollerBarPadding.bottom - _scrollerPadding.bottom);
+												_scrollerBarPadding.top,
+												_scrollerBarPadding.bottom);
 
 
 
@@ -83,7 +82,7 @@ public class sGuiBox : sGuiBase {
 			_styleScroller.fixedWidth = _scrollerBarSize + _scrollerBarPadding.left + _scrollerBarPadding.right;
 			_styleScroller.fixedHeight = 0;
 		} else {
-			_styleScroller.fixedHeight = _scrollerBarSize + _scrollerPadding.top + _scrollerPadding.bottom;
+			_styleScroller.fixedHeight = _scrollerBarSize + _scrollerBarPadding.top + _scrollerBarPadding.bottom;
 			_styleScroller.fixedWidth = 0;
 		}
 		
@@ -97,9 +96,9 @@ public class sGuiBox : sGuiBase {
 
 		
 		_boxPos = new Rect(_scrollerMargin.left,
-							_scrollerMargin.top + _scrollerPadding.top,
+							_scrollerMargin.top,
 							this.Position.width - _scrollerMargin.left - _scrollerMargin.right,
-							this.Position.height - _scrollerMargin.top - _scrollerMargin.bottom - _scrollerPadding.top -_scrollerPadding.bottom);
+							this.Position.height - _scrollerMargin.top - _scrollerMargin.bottom);
 		
 
 
@@ -203,7 +202,7 @@ public class sGuiBox : sGuiBase {
 					p.y = _boxPos.height;
 				}
 				_view.x = 0;
-				_view.width = _boxPos.width - _scrollerBarSize - _scrollerPadding.left - _scrollerPadding.right - _scrollerBarPadding.left - _scrollerBarPadding.right;
+				_view.width = _boxPos.width - _scrollerBarSize - _scrollerBarPadding.left - _scrollerBarPadding.right;
 				
 			    _view.height = p.y;
 				break;
@@ -212,7 +211,7 @@ public class sGuiBox : sGuiBase {
 					p.x = _boxPos.width;
 				}
 				_view.y = 0;
-				_view.height = _boxPos.height - _scrollerBarSize - _scrollerPadding.top - _scrollerPadding.bottom - _scrollerBarPadding.top - _scrollerBarPadding.bottom;
+				_view.height = _boxPos.height - _scrollerBarSize - _scrollerBarPadding.top - _scrollerBarPadding.bottom;
 				_view.width = p.x;
 				break;
 		}
