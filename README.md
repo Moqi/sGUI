@@ -139,7 +139,7 @@ In the Box, the 'Location' of the child is works
 * Text Align:
 * Content Offset:
 * Margin:
-* Is Password: mark to set the textfield to act like password
+* Is Password: mark to set the textfield to act like password. (thanks to @diegocbarboza)
 
 ## GuiToggle
 
