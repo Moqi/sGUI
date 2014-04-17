@@ -33,8 +33,8 @@ public class sGuiBox : sGuiBase {
 	public GUIStyle _styleThumb;
 
 
-	private Rect _view = new Rect();
-	private Rect _boxPos;
+	public Rect _view = new Rect();
+	public Rect _boxPos;
 
 
 
@@ -73,14 +73,30 @@ public class sGuiBox : sGuiBase {
 
 		_styleScroller.margin = _scrollerMargin;
 
-		_styleScroller.fixedWidth = _scrollerSize + _scrollerPadding.left + _scrollerPadding.right;
+		
+		if (ScrollerOverflow == DirectionBox.Vertical) {
+			_styleScroller.fixedWidth = _scrollerSize + _scrollerPadding.left + _scrollerPadding.right;
+			_styleScroller.fixedHeight = 0;
+		} else {
+			_styleScroller.fixedHeight = _scrollerSize + _scrollerPadding.top + _scrollerPadding.bottom;
+			_styleScroller.fixedWidth = 0;
+		}
+		
+		_styleScroller.stretchHeight = true;
+		_styleScroller.stretchWidth = true;
+		
+
 		_styleScroller.normal.background = _scrollerBg;
 		_styleThumb.normal.background = _scrollerThumb;
 		_styleThumb.overflow = _scrollerPadding;
 
 
-		_boxPos = new Rect(0, 0, this.Position.width, this.Position.height - _scrollerMargin.top - _scrollerMargin.bottom);
+		_boxPos = new Rect(_scrollerMargin.left, 
+							_scrollerMargin.top, 
+							this.Position.width - _scrollerMargin.left - _scrollerMargin.right, 
+							this.Position.height - _scrollerMargin.top - _scrollerMargin.bottom);
 		
+
 		foreach (Transform child in transform.Cast<Transform>().OrderBy(t => t.GetComponent<sGuiBase>().Depth.value)) {
 			if (child.GetComponent<sGuiBase>() != null) {
 				if (AlphaToChild) {
@@ -97,6 +113,16 @@ public class sGuiBox : sGuiBase {
 		}
 	}
 
+	public void setGuiSkin() {
+		if (ScrollerOverflow == DirectionBox.Vertical) {
+			GUI.skin.verticalScrollbarThumb = _styleThumb;
+			GUI.skin.verticalScrollbar = _styleScroller;
+		} else {
+			GUI.skin.horizontalScrollbarThumb = _styleThumb;
+			GUI.skin.horizontalScrollbar = _styleScroller;
+		}
+	}
+
 	public override void DrawGUI(Rect position, GUIStyle style) {
 
 		
@@ -104,10 +130,9 @@ public class sGuiBox : sGuiBase {
 		
 		if (Scroller) {
 
-			GUI.skin.verticalScrollbarThumb = _styleThumb;
-			GUI.skin.verticalScrollbar = _styleScroller;
+			setGuiSkin();
 
-			_scroll = GUI.BeginScrollView(_boxPos, _scroll, _view, false, true);
+			_scroll = GUI.BeginScrollView(_boxPos, _scroll, _view, ScrollerOverflow == DirectionBox.Horizontal, ScrollerOverflow == DirectionBox.Vertical);
 			onGuiContentScroller();
 			GUI.EndScrollView();
 		} else {
@@ -123,10 +148,13 @@ public class sGuiBox : sGuiBase {
 		
 		if (Scroller) {
 			GUI.skin.verticalScrollbarThumb = _styleThumb;
+			GUI.skin.horizontalScrollbarThumb = _styleThumb;
+
 			GUI.skin.verticalScrollbar = _styleScroller;
+			GUI.skin.horizontalScrollbar = _styleScroller;
 			
 			GUI.BeginGroup(position, style);
-			_scroll = GUI.BeginScrollView(_boxPos, _scroll, _view, false, true);
+			_scroll = GUI.BeginScrollView(_boxPos, _scroll, _view, ScrollerOverflow == DirectionBox.Horizontal, ScrollerOverflow == DirectionBox.Vertical);
 			onGuiContentScroller();
 			GUI.EndScrollView();
 			GUI.EndGroup();
@@ -168,7 +196,8 @@ public class sGuiBox : sGuiBase {
 				if (p.y < _boxPos.height) {
 					p.y = _boxPos.height;
 				}
-				_view.width = _boxPos.width - _scrollerSize - _scrollerPadding.left - _scrollerPadding.right - _scrollerMargin.left -_scrollerMargin.right;
+				_view.x = 0;
+				_view.width = _boxPos.width - _scrollerSize - _scrollerPadding.left - _scrollerPadding.right;
 				
 			    _view.height = p.y;
 				break;
@@ -176,7 +205,8 @@ public class sGuiBox : sGuiBase {
 				if (p.x < _boxPos.width) {
 					p.x = _boxPos.width;
 				}
-				_view.height = _boxPos.height - _scrollerSize - _scrollerPadding.top - _scrollerPadding.bottom - _scrollerMargin.top - _scrollerMargin.bottom;
+				_view.y = 0;
+				_view.height = _boxPos.height - _scrollerSize - _scrollerPadding.top - _scrollerPadding.bottom;
 				_view.width = p.x;
 				break;
 		}
