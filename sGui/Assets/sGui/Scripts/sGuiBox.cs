@@ -25,7 +25,8 @@ public class sGuiBox : sGuiBase {
 
 	public Texture2D _scrollerBg;
 	public Texture2D _scrollerThumb;
-	public float _scrollerSize;
+	public float _scrollerBarSize;
+	public RectOffset _scrollerBarPadding;
 	public RectOffset _scrollerPadding;
 	public RectOffset _scrollerMargin;
 
@@ -61,24 +62,28 @@ public class sGuiBox : sGuiBase {
 			_styleThumb.border.top = _styleThumb.border.bottom = (int)(_scrollerThumb.height * 0.5);
 		}
 
-		_styleScroller.padding = new RectOffset(_scrollerPadding.left-_scrollerMargin.right,
-		                                        _scrollerPadding.right+_scrollerMargin.right,
-		                                        _scrollerPadding.top-_scrollerMargin.bottom,
-		                                        _scrollerPadding.bottom+_scrollerMargin.bottom);
+		
+		_styleScroller.padding = new RectOffset(_scrollerBarPadding.left,
+												_scrollerBarPadding.right,
+												_scrollerBarPadding.top - _scrollerPadding.top,
+												_scrollerBarPadding.bottom - _scrollerPadding.bottom);
 
-		_styleScroller.overflow = new RectOffset(-_styleScroller.padding.left, 
-		                                         -_styleScroller.padding.right, 
-		                                         -_styleScroller.padding.top, 
-		                                         -_styleScroller.padding.bottom);
 
-		_styleScroller.margin = _scrollerMargin;
+
+
+		_styleScroller.overflow = new RectOffset(-_scrollerBarPadding.left,
+												 -_scrollerBarPadding.right,
+												 -_scrollerBarPadding.top,
+												 -_scrollerBarPadding.bottom);
+		
+		//_styleScroller.margin = _scrollerMargin;
 
 		
 		if (ScrollerOverflow == DirectionBox.Vertical) {
-			_styleScroller.fixedWidth = _scrollerSize + _scrollerPadding.left + _scrollerPadding.right;
+			_styleScroller.fixedWidth = _scrollerBarSize + _scrollerBarPadding.left + _scrollerBarPadding.right;
 			_styleScroller.fixedHeight = 0;
 		} else {
-			_styleScroller.fixedHeight = _scrollerSize + _scrollerPadding.top + _scrollerPadding.bottom;
+			_styleScroller.fixedHeight = _scrollerBarSize + _scrollerPadding.top + _scrollerPadding.bottom;
 			_styleScroller.fixedWidth = 0;
 		}
 		
@@ -88,14 +93,15 @@ public class sGuiBox : sGuiBase {
 
 		_styleScroller.normal.background = _scrollerBg;
 		_styleThumb.normal.background = _scrollerThumb;
-		_styleThumb.overflow = _scrollerPadding;
+		_styleThumb.overflow = _scrollerBarPadding;
 
-
-		_boxPos = new Rect(_scrollerMargin.left, 
-							_scrollerMargin.top, 
-							this.Position.width - _scrollerMargin.left - _scrollerMargin.right, 
-							this.Position.height - _scrollerMargin.top - _scrollerMargin.bottom);
 		
+		_boxPos = new Rect(_scrollerMargin.left,
+							_scrollerMargin.top + _scrollerPadding.top,
+							this.Position.width - _scrollerMargin.left - _scrollerMargin.right,
+							this.Position.height - _scrollerMargin.top - _scrollerMargin.bottom - _scrollerPadding.top -_scrollerPadding.bottom);
+		
+
 
 		foreach (Transform child in transform.Cast<Transform>().OrderBy(t => t.GetComponent<sGuiBase>().Depth.value)) {
 			if (child.GetComponent<sGuiBase>() != null) {
@@ -197,7 +203,7 @@ public class sGuiBox : sGuiBase {
 					p.y = _boxPos.height;
 				}
 				_view.x = 0;
-				_view.width = _boxPos.width - _scrollerSize - _scrollerPadding.left - _scrollerPadding.right;
+				_view.width = _boxPos.width - _scrollerBarSize - _scrollerPadding.left - _scrollerPadding.right - _scrollerBarPadding.left - _scrollerBarPadding.right;
 				
 			    _view.height = p.y;
 				break;
@@ -206,7 +212,7 @@ public class sGuiBox : sGuiBase {
 					p.x = _boxPos.width;
 				}
 				_view.y = 0;
-				_view.height = _boxPos.height - _scrollerSize - _scrollerPadding.top - _scrollerPadding.bottom;
+				_view.height = _boxPos.height - _scrollerBarSize - _scrollerPadding.top - _scrollerPadding.bottom - _scrollerBarPadding.top - _scrollerBarPadding.bottom;
 				_view.width = p.x;
 				break;
 		}
