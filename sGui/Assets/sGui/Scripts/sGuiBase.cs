@@ -199,4 +199,11 @@ public class sGuiBase : MonoBehaviour {
 		}
 	}
 
+	public Rect relativePos {
+		get {
+			return _relativePos;
+		}
+	}
+	
+
 }

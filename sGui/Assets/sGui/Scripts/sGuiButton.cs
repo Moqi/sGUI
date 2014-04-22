@@ -26,8 +26,10 @@ public class sGuiButton : sGuiBase {
 	public ImagePosition ContentImagePosition;
 	public RectOffset Margin;
 
-
+	private bool _hover;
 	private OnClickFunc _onClickButton;
+	private OnClickFunc _onHoverButton;
+	private OnClickFunc _onOutButton;
 	
 	public delegate void OnClickFunc(GameObject curr = null);
 	
@@ -51,6 +53,22 @@ public class sGuiButton : sGuiBase {
 		Style.normal.textColor = FontColor;
 		Style.hover.textColor = FontColorHover;
 		Style.active.textColor = FontColorActive;
+
+	}
+
+	void Update() {
+		
+		if (relativePos.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
+			if (_onHoverButton != null) {
+				_onHoverButton(this.gameObject);
+			}
+			_hover = true;
+		} else if (_hover) {
+			if (_onOutButton != null) {
+				_onOutButton(this.gameObject);
+			}
+			_hover = false;
+		}
 
 	}
 
@@ -96,4 +114,14 @@ public class sGuiButton : sGuiBase {
           get{ return _onClickButton;  }
 		set{ _onClickButton = value; }
     }
+
+	public OnClickFunc onHoverButton {
+		get { return _onHoverButton; }
+		set { _onHoverButton = value; }
+	}
+
+	public OnClickFunc onOutButton {
+		get { return _onOutButton; }
+		set { _onOutButton = value; }
+	}
 }
