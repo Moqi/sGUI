@@ -26,8 +26,12 @@ public class sGuiButton : sGuiBase {
 	public ImagePosition ContentImagePosition;
 	public RectOffset Margin;
 
-
+	private Rect absPos;
+	private Vector2 rpos;
+	private bool _hover;
 	private OnClickFunc _onClickButton;
+	private OnClickFunc _onHoverButton;
+	private OnClickFunc _onOutButton;
 	
 	public delegate void OnClickFunc(GameObject curr = null);
 	
@@ -54,11 +58,30 @@ public class sGuiButton : sGuiBase {
 
 	}
 
+	void Update() {
+
+		if (absPos.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
+			if (_onHoverButton != null) {
+				_onHoverButton(this.gameObject);
+			}
+			_hover = true;
+		} else if (_hover) {
+			if (_onOutButton != null) {
+				_onOutButton(this.gameObject);
+			}
+			_hover = false;
+		}
+
+	}
+
 
 	public override void DrawGUI(Rect position, GUIStyle style) {
 
 		
 		bool _clicked = GUI.Button(position, Content, style);
+		
+		rpos = GUIUtility.GUIToScreenPoint(new Vector2(position.x, position.y)); ;
+		absPos = new Rect(rpos.x, rpos.y, position.width, position.height);
 		
 		if (_clicked) {
 			
@@ -76,7 +99,10 @@ public class sGuiButton : sGuiBase {
 	public override void DrawChildGUI(Rect position, GUIStyle style) {
 
 		bool _clicked = GUI.Button(position, Content, style);
-		
+
+		rpos = GUIUtility.GUIToScreenPoint(new Vector2(position.x, position.y)); ;
+		absPos = new Rect(rpos.x, rpos.y, position.width, position.height);
+
 		if (_clicked) {
 			
 			if (_hasAudio && this.GetComponent<AudioSource>() != null) {
@@ -96,4 +122,14 @@ public class sGuiButton : sGuiBase {
           get{ return _onClickButton;  }
 		set{ _onClickButton = value; }
     }
+
+	public OnClickFunc onHoverButton {
+		get { return _onHoverButton; }
+		set { _onHoverButton = value; }
+	}
+
+	public OnClickFunc onOutButton {
+		get { return _onOutButton; }
+		set { _onOutButton = value; }
+	}
 }
