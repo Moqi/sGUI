@@ -36,6 +36,7 @@ public class sGuiBase : MonoBehaviour {
 
 	private RectOffset BackgroundBorder = new RectOffset();
 	private Rect _relativePos;
+	private Rect _parentPos;
 	private GUIStyle _style = new GUIStyle();
 
 	void Start () {
@@ -140,6 +141,7 @@ public class sGuiBase : MonoBehaviour {
 		isChild = true;
 
 		DrawGuiBase();
+		_parentPos = parent;
 		CalculateRelativePos(parent);
 
 		_relativePos.x += pos.x;
@@ -157,6 +159,7 @@ public class sGuiBase : MonoBehaviour {
 		isChild = true;
 
 		DrawGuiBase();
+		_parentPos = parent;
 		CalculateRelativePos(parent);
 		DrawGUI(_relativePos, _style);
 
@@ -202,6 +205,11 @@ public class sGuiBase : MonoBehaviour {
 	public Rect relativePos {
 		get {
 			return _relativePos;
+		}
+	}
+	public Rect parentPos {
+		get {
+			return _parentPos;
 		}
 	}
 	

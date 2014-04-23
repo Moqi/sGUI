@@ -26,6 +26,7 @@ public class sGuiButton : sGuiBase {
 	public ImagePosition ContentImagePosition;
 	public RectOffset Margin;
 
+	private Rect absPos;
 	private bool _hover;
 	private OnClickFunc _onClickButton;
 	private OnClickFunc _onHoverButton;
@@ -57,8 +58,12 @@ public class sGuiButton : sGuiBase {
 	}
 
 	void Update() {
-		
-		if (relativePos.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
+		absPos = relativePos;
+		if (isChild) {
+			absPos.x += this.transform.parent.GetComponent<sGuiBase>().relativePos.x;
+			absPos.y += this.transform.parent.GetComponent<sGuiBase>().relativePos.y;
+		}
+		if (absPos.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
 			if (_onHoverButton != null) {
 				_onHoverButton(this.gameObject);
 			}
