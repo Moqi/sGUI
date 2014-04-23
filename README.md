@@ -2,9 +2,9 @@ sGUI
 ====
 
 Unity3d GUI helper.
-Current Version 1.2
+Current Version 1.2.1 [See changes](#changes)
 
-[Download Package](https://github.com/sharbelfs/sGUI/raw/master/sGui-1.2.unitypackage)
+[Download Package](https://github.com/sharbelfs/sGUI/raw/master/sGui-1.2.1.unitypackage)
 
 Assets thanks to [Kenney](http://www.kenney.nl)
 
@@ -22,6 +22,7 @@ Drag the prefab into the scene and configure as you like.
 * [GuiTextarea](#guitextarea)
 * [GuiToggle](#guitoggle)
 
+* [Create Custom](#create-custom)
 
 ## GuiBase
 
@@ -34,9 +35,6 @@ Although its possible to extend and create others elements.
 * is Enabled: set if you can interact with the gui element
 * Location: Location base on the screen
 * Position: position in pixels of the element in the screen
-* Background Texture: The image is resized to fit the element.
-* Background Color: Color RGBA of the background element
-
 
 
 ## GuiBox
@@ -70,49 +68,43 @@ In the Box, the 'Location' of the child is works
 ## GuiButton
 
 * Has Audio: if its enabled, you need to set the sound in the "Audio Source"
-* Background Hover:
-* Background Pressed:
-* Font Family:
-* Font Size:
-* Font Color:
-* Font Hover Color:
-* Font Pressed Color:
-* Text Align:
-* Content:
-* Content Offset:
-* Content Image Position:
-* Margin:
 
 ##### Script
 
 * onClickButton: 
-
 ```
   onClickButton(GameObject current) {
     // do some action when button is clicked
   }
 ```
 
+* onHoverButton: 
+```
+  onHoverButton(GameObject current) {
+    // do some action when button is hover
+  }
+```
+
+* onOutButton: 
+```
+  onOutButton(GameObject current) {
+    // do some action when button is leave the hover state
+  }
+```
 
 ## GuiImage
 
-* Image:
-* Scale Mode:
+Simple Image. Can be used to resize gui Images.
 
 
 ## GuiLabel
 
-* Font Family:
-* Font Size:
-* Font Color:
-* Text Align:
-* Content:
-* Content Offset:
-* Content Image Position:
-* Margin:
+Simple Label text. Can be used as label, multiline text and/or with a texture
 
 
 ## GuiSlider
+
+A Value slider. You need to set the Min and Max values. You can set and get the current value of the slider by script
 
 * Direction: Vertical or Horizontal
 * Slider Texture:
@@ -128,31 +120,15 @@ In the Box, the 'Location' of the child is works
 
 ## GuiTextarea
 
+its a input text area
+
 * Text: text typed in the area. You can set initial text and get in from script
 * Max Length: set '0' to unlimited character
-* Background Focus:
-* Padding:
-* Font Family:
-* Font Size:
-* Font Color:
-* Font Focus Color:
-* Text Align:
-* Content Offset:
-* Margin:
 * Is Password: mark to set the textfield to act like password. (thanks to @diegocbarboza)
 
 ## GuiToggle
 
-* Font Family
-* Font Size
-* Text Align
-* Content
-* Font Color
-* Background Texture Pressed: Background of the element when its pressed
-* Content Pressed: you need to set the content, even if its the same
-* Font Color Pressed:
-* Content Offset:
-* Content Image Position: Image position is the same for normal and pressed state
+Toggle Element, it changes its state 'pressed' to true or false
 
 ##### Script
 
@@ -160,8 +136,46 @@ In the Box, the 'Location' of the child is works
 
 
 
+## Create Custom
+
+This is the base to create a custom GuiElement. Extending the base class, it will work with all others elements.
+
+```
+using UnityEngine;
+using System.Collections;
+
+
+[ExecuteInEditMode]
+public class CustomGuiItem : sGuiBase {
+
+  // used to update the styles in EditMode when changes
+	public override void updateStyles() {
+
+		base.updateStyles();
+		
+		// custom style
+		Style.richText = true;
+
+	}
+  
+  // in the current version both function do the same thing, just replicate the content of both
+	public override void DrawGUI(Rect position, GUIStyle style) {
+		
+	}
+
+	public override void DrawChildGUI(Rect position, GUIStyle style) {
+		
+	}
+}
+
+```
+
+
 Changes
 ====
+
+### 1.2.1
+* Script for MouserOver and MouseOut events
 
 ### 1.2
 * Scroller Box Vertical / Horizontal
