@@ -22,7 +22,7 @@ public class sGuiLabel : sGuiBase {
 	
 		Style.contentOffset = ContentOffset;
 		Style.imagePosition = ContentImagePosition;
-		Style.margin = Margin;
+		Style.padding = Margin;
 
 		Style.alignment = TextAlign;
 		Style.fontSize = FontSize;
