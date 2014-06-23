@@ -26,8 +26,8 @@ public class sGuiBox : sGuiBase {
 	public Texture2D _scrollerBg;
 	public Texture2D _scrollerThumb;
 	public float _scrollerBarSize;
-	public RectOffset _scrollerBarPadding;
-	public RectOffset _scrollerMargin;
+	public RectOffset _scrollerBarPadding = new RectOffset();
+	public RectOffset _scrollerMargin = new RectOffset();
 
 	public GUIStyle _styleScroller;
 	public GUIStyle _styleThumb;

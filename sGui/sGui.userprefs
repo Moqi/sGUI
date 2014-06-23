@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/sGui/Scripts/sGuiBox.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/sGui/Scripts/sGuiLabel.cs">
     <Files>
-      <File FileName="Assets/sGui/Scripts/sGuiBox.cs" Line="82" Column="116" />
+      <File FileName="Assets/sGui/Scripts/sGuiBox.cs" Line="1" Column="1" />
+      <File FileName="Assets/sGui/Scripts/sGuiLabel.cs" Line="25" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -10,7 +11,7 @@
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="sGui" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="sGuiBox.cs" selected="True" />
+                <Node name="sGuiLabel.cs" selected="True" />
               </Node>
             </Node>
           </Node>

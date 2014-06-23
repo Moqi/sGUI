@@ -15,7 +15,6 @@ public class sGuiText : sGuiBase {
 	public RectOffset Padding = new RectOffset();
 
 
-	public Font FontFamily;
 	public int FontSize = 10;
 	public Color FontColor = Color.gray;
 	public Color FontFocusColor = Color.red;
