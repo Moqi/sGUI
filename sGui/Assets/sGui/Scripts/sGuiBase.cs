@@ -22,6 +22,7 @@ public enum DirectionBox
 [ExecuteInEditMode]
 public class sGuiBase : MonoBehaviour {
 
+	public Font FontFamily;
 	public AlphaSlider Alpha;
 	public DepthSlider Depth;
 	public bool isChild = false;
@@ -32,6 +33,16 @@ public class sGuiBase : MonoBehaviour {
 
 	public Texture2D BackgroundTexture;
 	public Color BackgroundColor = new Color(1,1,1,1);
+
+	public GUIContent Content;
+
+	public float Rotation = 0;
+
+	public Color TooltipFontColor = Color.gray;
+	public int TooltipFontSize = 10;
+	public TextAnchor TooltipPosition = TextAnchor.MiddleCenter;
+	public int TooltipWidth = 100;
+	private GUIStyle TooltipStyle;
 
 
 	private RectOffset BackgroundBorder = new RectOffset();
@@ -66,6 +77,65 @@ public class sGuiBase : MonoBehaviour {
 		
 
 		CalculateRelativePos();
+
+		updateToolTip();
+	}
+
+	public void updateToolTip() {
+		if (TooltipStyle == null) {
+			TooltipStyle = new GUIStyle();
+		}
+		TooltipStyle.fontSize = TooltipFontSize;
+		TooltipStyle.font = FontFamily;
+		TooltipStyle.richText = true;
+		TooltipStyle.normal.textColor = TooltipFontColor;
+		TooltipStyle.alignment = TooltipPosition;
+	}
+	public void drawTooltip() {
+		if (Content.tooltip.Length > 3) {
+			Rect pos = _relativePos;
+			pos.height = TooltipFontSize;
+			pos.width = TooltipWidth;
+			switch (TooltipPosition) {
+				case TextAnchor.LowerCenter:
+					pos.x = _relativePos.x + _relativePos.width * 0.5f - pos.width * 0.5f;
+					pos.y = _relativePos.y + _relativePos.height;
+					break;
+				case TextAnchor.LowerLeft:
+					pos.x = _relativePos.x;
+					pos.y = _relativePos.y + _relativePos.height;
+					break;
+				case TextAnchor.LowerRight:
+					pos.x = _relativePos.x + _relativePos.width - pos.width;
+					pos.y = _relativePos.y + _relativePos.height;
+					break;
+				case TextAnchor.MiddleCenter:
+					pos.x = _relativePos.x + _relativePos.width * 0.5f - pos.width * 0.5f;
+					pos.y = _relativePos.y + _relativePos.height * 0.5f - pos.height * 0.5f;
+					break;
+				case TextAnchor.MiddleLeft:
+					pos.x = _relativePos.x - pos.width;
+					pos.y = _relativePos.y + _relativePos.height * 0.5f - pos.height * 0.5f;
+					break;
+				case TextAnchor.MiddleRight:
+					pos.x = _relativePos.x + _relativePos.width;
+					pos.y = _relativePos.y + _relativePos.height * 0.5f - pos.height * 0.5f;
+					break;
+				case TextAnchor.UpperCenter:
+					pos.x = _relativePos.x + _relativePos.width * 0.5f - pos.width * 0.5f;
+					pos.y = _relativePos.y - pos.height;
+					break;
+				case TextAnchor.UpperLeft:
+					pos.x = _relativePos.x;
+					pos.y = _relativePos.y - pos.height;
+					break;
+				case TextAnchor.UpperRight:
+					pos.x = _relativePos.x + _relativePos.width - pos.width;
+					pos.y = _relativePos.y - pos.height;
+					break;
+			}
+			GUI.Label(new Rect(pos), GUI.tooltip, TooltipStyle);
+		}
 	}
 
 	private void CalculateRelative(Rect rect) {
@@ -122,6 +192,8 @@ public class sGuiBase : MonoBehaviour {
 					 Position.width, Position.height);
 				break;
 		}
+
+		GUIUtility.RotateAroundPivot(Rotation, new Vector2(_relativePos.x + _relativePos.width * 0.5f, _relativePos.y + _relativePos.height * 0.5f));
 	}
 
 	public void CalculateRelativePos() {
@@ -146,7 +218,7 @@ public class sGuiBase : MonoBehaviour {
 		_relativePos.y += pos.y;
 
 		DrawChildGUI(_relativePos, _style);
-
+		drawTooltip();
 		return new Vector2(_relativePos.x + _relativePos.width, _relativePos.y + _relativePos.height);
 	}
 
@@ -159,7 +231,7 @@ public class sGuiBase : MonoBehaviour {
 		DrawGuiBase();
 		CalculateRelativePos(parent);
 		DrawGUI(_relativePos, _style);
-
+		drawTooltip();
 	}
 
 	void OnGUI() {
@@ -172,6 +244,7 @@ public class sGuiBase : MonoBehaviour {
 			DrawGuiBase();
 			CalculateRelativePos();
 			DrawGUI(_relativePos, _style);
+			drawTooltip();
 		}
 	}
 

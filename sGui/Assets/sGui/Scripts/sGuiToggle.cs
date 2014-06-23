@@ -6,12 +6,10 @@ using System.Collections;
 [ExecuteInEditMode]
 public class sGuiToggle : sGuiBase {
 	
-	public Font FontFamily;
 	public int FontSize = 10;
 	
 	public TextAnchor TextAlign;
 	
-	public GUIContent Content;
 	public Color FontColor = Color.gray;
 
 	public Texture2D BackgroundTexturePressed;

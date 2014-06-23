@@ -6,12 +6,10 @@ using System.Collections;
 public class sGuiLabel : sGuiBase {
 
 
-	public Font FontFamily;
 	public int FontSize = 10;
 	public Color FontColor = Color.gray;
 	public TextAnchor TextAlign;
 
-	public GUIContent Content;
 	public Vector2 ContentOffset;
 	public ImagePosition ContentImagePosition;
 	public RectOffset Margin;

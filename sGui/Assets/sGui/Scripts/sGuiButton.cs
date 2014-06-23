@@ -12,7 +12,6 @@ public class sGuiButton : sGuiBase {
 	public Texture2D BackgroundPressed;
 	
 	
-	public Font FontFamily;
 	public int FontSize = 10;
 
 	public Color FontColor = Color.gray;
@@ -21,7 +20,6 @@ public class sGuiButton : sGuiBase {
 
 	public TextAnchor TextAlign;
 	
-	public GUIContent Content;
 	public Vector2 ContentOffset;
 	public ImagePosition ContentImagePosition;
 	public RectOffset Margin;
